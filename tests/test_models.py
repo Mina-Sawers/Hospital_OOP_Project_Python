@@ -11,5 +11,11 @@ class TestDepartment(unittest.TestCase):
         department = Department("cardiology")
         patient = Patient("ahmad mousa", 30, "heart condition")
         department.add_patient(patient)
-        self.assertEqual(len(Department.patients),1)
+        self.assertEqual(len(department.patients),1)
+
+    def test_addstaff(self):
+        department = Department("cardiology")
+        staff = Staff("hassan mousa", 32, "doctor")
+        department.add_staff(staff)
+        self.assertEqual(len(department.staff),1)
 
