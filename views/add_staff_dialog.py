@@ -1,10 +1,10 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 import os
 
 from PIL import Image, ImageTk
 
-from models.patient import Patient
+from models.staff import Staff
 
 
 # =========================
@@ -16,27 +16,29 @@ DARK_GREEN = "#1B5E20"
 LIGHT_GREEN = "#E8F5E9"
 WHITE = "#FFFFFF"
 DARK_TEXT = "#263238"
-BORDER_GREEN = "#66BB6A"
 
 
-class AddPatientDialog(tk.Toplevel):
-    """GUI window for adding a new patient."""
+class AddStaffDialog(tk.Toplevel):
+    """GUI window for adding a new staff member."""
 
-    def __init__(self, parent, on_patient_added=None):
+    def __init__(self, parent, on_staff_added=None):
+
         super().__init__(parent)
 
         self.parent = parent
-        self.on_patient_added = on_patient_added
 
-        self.title("Add New Patient")
-        self.geometry("600x720")
+        self.on_staff_added = on_staff_added
+
+        self.title("Add New Staff")
+
+        self.geometry("600x550")
+
         self.resizable(False, False)
 
-        # Window background
         self.configure(bg=WHITE)
 
-        # Keep window above main window
         self.transient(parent)
+
         self.grab_set()
 
         self.create_widgets()
@@ -52,29 +54,32 @@ class AddPatientDialog(tk.Toplevel):
             bg=GREEN,
             height=70
         )
+
         header_frame.pack(
             fill="x"
         )
 
         title_label = tk.Label(
             header_frame,
-            text="Add New Patient",
+            text="Add New Staff",
             font=("Arial", 22, "bold"),
             bg=GREEN,
             fg=WHITE
         )
+
         title_label.pack(
             pady=18
         )
 
         # =========================
-        # Patient Image
+        # Staff Image
         # =========================
 
         image_frame = tk.Frame(
             self,
             bg=WHITE
         )
+
         image_frame.pack(
             pady=(15, 5)
         )
@@ -82,25 +87,25 @@ class AddPatientDialog(tk.Toplevel):
         image_path = os.path.join(
             os.path.dirname(__file__),
             "assets",
-            "patient.png"
+            "staff.png"
         )
 
         image = Image.open(image_path)
 
-        # Resize while keeping aspect ratio
         image.thumbnail((120, 120))
 
-        self.patient_image = ImageTk.PhotoImage(image)
+        self.staff_image = ImageTk.PhotoImage(image)
 
         image_label = tk.Label(
             image_frame,
-            image=self.patient_image,
+            image=self.staff_image,
             bg=WHITE
         )
+
         image_label.pack()
 
         # =========================
-        # Form Container
+        # Form
         # =========================
 
         form_frame = tk.Frame(
@@ -117,12 +122,12 @@ class AddPatientDialog(tk.Toplevel):
         )
 
         # =========================
-        # Patient Name
+        # Name
         # =========================
 
         tk.Label(
             form_frame,
-            text="Patient Name:",
+            text="Staff Name:",
             font=("Arial", 11, "bold"),
             bg=LIGHT_GREEN,
             fg=DARK_TEXT
@@ -131,7 +136,7 @@ class AddPatientDialog(tk.Toplevel):
             column=0,
             sticky="w",
             padx=20,
-            pady=(18, 8)
+            pady=(18, 10)
         )
 
         self.name_entry = tk.Entry(
@@ -148,7 +153,7 @@ class AddPatientDialog(tk.Toplevel):
             row=0,
             column=1,
             padx=20,
-            pady=(18, 8)
+            pady=(18, 10)
         )
 
         # =========================
@@ -166,7 +171,7 @@ class AddPatientDialog(tk.Toplevel):
             column=0,
             sticky="w",
             padx=20,
-            pady=8
+            pady=10
         )
 
         self.age_entry = tk.Entry(
@@ -183,64 +188,28 @@ class AddPatientDialog(tk.Toplevel):
             row=1,
             column=1,
             padx=20,
-            pady=8
+            pady=10
         )
 
         # =========================
-        # Medical Record
+        # Position
         # =========================
 
         tk.Label(
             form_frame,
-            text="Medical Record:",
+            text="Position:",
             font=("Arial", 11, "bold"),
             bg=LIGHT_GREEN,
             fg=DARK_TEXT
         ).grid(
             row=2,
-            column=0,
-            sticky="nw",
-            padx=20,
-            pady=8
-        )
-
-        self.medical_record_text = tk.Text(
-            form_frame,
-            width=38,
-            height=4,
-            font=("Arial", 11),
-            bg=WHITE,
-            fg=DARK_TEXT,
-            relief="solid",
-            bd=1
-        )
-
-        self.medical_record_text.grid(
-            row=2,
-            column=1,
-            padx=20,
-            pady=8
-        )
-
-        # =========================
-        # Room
-        # =========================
-
-        tk.Label(
-            form_frame,
-            text="Room:",
-            font=("Arial", 11, "bold"),
-            bg=LIGHT_GREEN,
-            fg=DARK_TEXT
-        ).grid(
-            row=3,
             column=0,
             sticky="w",
             padx=20,
-            pady=8
+            pady=(10, 18)
         )
 
-        self.room_entry = tk.Entry(
+        self.position_entry = tk.Entry(
             form_frame,
             width=38,
             font=("Arial", 11),
@@ -250,51 +219,12 @@ class AddPatientDialog(tk.Toplevel):
             bd=1
         )
 
-        self.room_entry.grid(
-            row=3,
+        self.position_entry.grid(
+            row=2,
             column=1,
             padx=20,
-            pady=8
+            pady=(10, 18)
         )
-
-        # =========================
-        # Status
-        # =========================
-
-        tk.Label(
-            form_frame,
-            text="Status:",
-            font=("Arial", 11, "bold"),
-            bg=LIGHT_GREEN,
-            fg=DARK_TEXT
-        ).grid(
-            row=4,
-            column=0,
-            sticky="w",
-            padx=20,
-            pady=(8, 18)
-        )
-
-        self.status_combobox = ttk.Combobox(
-            form_frame,
-            values=[
-                "Stable",
-                "Observation",
-                "Critical"
-            ],
-            state="readonly",
-            width=36,
-            font=("Arial", 11)
-        )
-
-        self.status_combobox.grid(
-            row=4,
-            column=1,
-            padx=20,
-            pady=(8, 18)
-        )
-
-        self.status_combobox.set("Stable")
 
         # =========================
         # Buttons
@@ -309,11 +239,11 @@ class AddPatientDialog(tk.Toplevel):
             pady=18
         )
 
-        # Add Patient Button
-        self.add_button = tk.Button(
+        # Add Staff
+        add_button = tk.Button(
             button_frame,
-            text="Add Patient",
-            command=self.add_patient,
+            text="Add Staff",
+            command=self.add_staff,
             width=16,
             font=("Arial", 11, "bold"),
             bg=GREEN,
@@ -325,15 +255,15 @@ class AddPatientDialog(tk.Toplevel):
             cursor="hand2"
         )
 
-        self.add_button.grid(
+        add_button.grid(
             row=0,
             column=0,
             padx=10,
             ipady=5
         )
 
-        # Cancel Button
-        self.cancel_button = tk.Button(
+        # Cancel
+        cancel_button = tk.Button(
             button_frame,
             text="Cancel",
             command=self.destroy,
@@ -348,34 +278,26 @@ class AddPatientDialog(tk.Toplevel):
             cursor="hand2"
         )
 
-        self.cancel_button.grid(
+        cancel_button.grid(
             row=0,
             column=1,
             padx=10,
             ipady=5
         )
 
-        # Put cursor in first field
         self.name_entry.focus()
 
     # =========================
-    # ADD PATIENT
+    # ADD STAFF
     # =========================
 
-    def add_patient(self):
+    def add_staff(self):
 
         name = self.name_entry.get().strip()
 
         age_text = self.age_entry.get().strip()
 
-        medical_record = self.medical_record_text.get(
-            "1.0",
-            tk.END
-        ).strip()
-
-        room = self.room_entry.get().strip()
-
-        status = self.status_combobox.get()
+        position = self.position_entry.get().strip()
 
         # =========================
         # Validation
@@ -385,7 +307,7 @@ class AddPatientDialog(tk.Toplevel):
 
             messagebox.showerror(
                 "Invalid Input",
-                "Please enter the patient's name.",
+                "Please enter the staff member's name.",
                 parent=self
             )
 
@@ -397,7 +319,7 @@ class AddPatientDialog(tk.Toplevel):
 
             messagebox.showerror(
                 "Invalid Input",
-                "Please enter the patient's age.",
+                "Please enter the staff member's age.",
                 parent=self
             )
 
@@ -433,53 +355,46 @@ class AddPatientDialog(tk.Toplevel):
 
             return
 
-        if not medical_record:
+        if not position:
 
             messagebox.showerror(
                 "Invalid Input",
-                "Please enter the medical record.",
+                "Please enter the staff position.",
                 parent=self
             )
 
-            self.medical_record_text.focus()
+            self.position_entry.focus()
 
             return
 
-        if not room:
-            room = "N/A"
-
-        if not status:
-            status = "Stable"
-
         # =========================
-        # Create Patient Object
+        # Create Staff
         # =========================
 
-        patient = Patient(
+        staff = Staff(
             name=name,
             age=age,
-            medical_record=medical_record,
-            room=room,
-            status=status
+            position=position
         )
 
         # =========================
-        # Send Patient to Main Window
+        # Send to Main Window
         # =========================
 
-        if self.on_patient_added:
+        if self.on_staff_added:
 
-            self.on_patient_added(patient)
+            self.on_staff_added(staff)
 
         # =========================
-        # Success Message
+        # Success
         # =========================
 
         messagebox.showinfo(
             "Success",
-            f"Patient added successfully!\n\n"
-            f"Patient ID: {patient.patient_id}\n"
-            f"Name: {patient.name}",
+            f"Staff member added successfully!\n\n"
+            f"Name: {staff.name}\n"
+            f"Age: {staff.age}\n"
+            f"Position: {staff.position}",
             parent=self
         )
 
@@ -500,6 +415,6 @@ if __name__ == "__main__":
 
     root.configure(bg=WHITE)
 
-    AddPatientDialog(root)
+    AddStaffDialog(root)
 
     root.mainloop()
