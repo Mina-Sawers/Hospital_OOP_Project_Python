@@ -1,0 +1,1 @@
+I added id, room, and status to the patient class
