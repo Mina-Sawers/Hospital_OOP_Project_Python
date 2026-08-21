@@ -1,9 +1,5 @@
-<<<<<<< Updated upstream
-from person import Person
-=======
 import random
 from .person import Person
->>>>>>> Stashed changes
 
 
 class Patient(Person):
