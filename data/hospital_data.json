@@ -1,0 +1,46 @@
+{
+    "name": "City General Hospital",
+    "location": "123 Main St, Springfield",
+    "departments": [
+        {
+            "name": "Cardiology",
+            "patients": [
+                {
+                    "patient_id": "PT-1001",
+                    "name": "John Johnson",
+                    "age": 34,
+                    "medical_record": "No known allergies",
+                    "room": "2A-05",
+                    "status": "Stable"
+                }
+            ],
+            "staff": [
+                {
+                    "name": "Dr. Sarah Sameer",
+                    "age": 45,
+                    "position": "Cardiologist"
+                }
+            ]
+        },
+        {
+            "name": "Pediatrics",
+            "patients": [
+                {
+                    "patient_id": "PT-1002",
+                    "name": "Hany Ahmad",
+                    "age": 7,
+                    "medical_record": "Asthma, seasonal",
+                    "room": "3B-02",
+                    "status": "Observation"
+                }
+            ],
+            "staff": [
+                {
+                    "name": "Dr. Omar Hassan",
+                    "age": 38,
+                    "position": "Pediatrician"
+                }
+            ]
+        }
+    ]
+}
